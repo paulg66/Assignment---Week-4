@@ -1,0 +1,41 @@
+library(dplyr)
+## Merges the training and the test sets to create one data set
+## Read data from local directory and assign to data frame variables
+filePathTest <- "C:\\Users\\Paul\\Documents\\Coursera\\Data Science - John Hopkins\\Course 3 - Getting and Cleaning Data\\Week 4\\test"
+filePathTrain <- "C:\\Users\\Paul\\Documents\\Coursera\\Data Science - John Hopkins\\Course 3 - Getting and Cleaning Data\\Week 4\\train"
+SubjectTest <- read.table(file.path(filePathTest,"subject_test.txt"))
+XTest <- read.table(file.path(filePathTest,"X_test.txt"))
+YTest <- read.table(file.path(filePathTest,"Y_test.txt"))
+SubjectTrain <- read.table(file.path(filePathTrain,"subject_train.txt"))
+XTrain <- read.table(file.path(filePathTrain,"X_train.txt"))
+YTrain <- read.table(file.path(filePathTrain,"Y_train.txt"))
+features <- read.table("C:\\Users\\Paul\\Documents\\Coursera\\Data Science - John Hopkins\\Course 3 - Getting and Cleaning Data\\Week 4\\features.txt",as.is = TRUE)
+
+##merge all files using row and column bind commands
+activities <- read.table("C:\\Users\\Paul\\Documents\\Coursera\\Data Science - John Hopkins\\Course 3 - Getting and Cleaning Data\\Week 4\\activity_labels.txt")
+dataSet <- rbind(cbind(SubjectTrain,XTrain,YTrain),cbind(SubjectTest,XTest,YTest))
+colnames(dataSet) <- c("subject", features[, 2], "activity") ## assign column names from features file
+cols <- grepl("mean|std|subject|activity", colnames(dataSet)) ## search for instances using grepl
+dataSet <- dataSet[,cols] ## keep relevent columns
+
+##Use descriptive activity names to name the activities in the data set
+dataSet$activity <- factor(dataSet$activity,levels = activities[,1], labels = activities[,2])
+
+##Appropriately labels the data set with descriptive variable names. 
+columnNames <- colnames(dataSet)
+columnNames <- gsub("^t", "TimeDomain",columnNames)
+columnNames <- gsub("^f", "FreqDomain",columnNames)
+columnNames <- gsub("Acc", "Accelerometer", columnNames)
+columnNames <- gsub("Gyro", "Gyroscope", columnNames)
+columnNames <- gsub("Mag", "Magnitude", columnNames)
+columnNames <- gsub("Freq", "Frequency", columnNames)
+columnNames <- gsub("mean", "Mean", columnNames)
+columnNames <- gsub("std", "StandardDeviation", columnNames)
+columnNames <- gsub("BodyBody", "Body", columnNames)
+colnames(dataSet)<- columnNames
+
+##From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+dataSetAverage <- dataSet %>% 
+group_by(subject, activity) %>%
+summarise_each(funs(mean))
+write.table(dataSetAverage, "tidy_data.txt", row.names = FALSE, quote = FALSE)
