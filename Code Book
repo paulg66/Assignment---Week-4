@@ -1,10 +1,15 @@
-The R-code does the following
+Data Set Information:
 
-    Extracts .txt files from local directory
-    Reads the training and test datasets into R along with the subject, activity, and feature datasets
-    Merges the training and the test datasets into one dataset
-    Label the subject, activity, and measurement tables with descriptive column names
-    Extract the SD and average columns from the measurement table
-    Merge subject, activity, and measurement tables together
-    Creates a independent tidy data set with the average of each variable for each activity and each subject
-    The dataset is outputed in "tidy_data.txt"
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data.
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
+
+There are 2 identifier variables and 79 numeric variables found in the output file, the variable names follow the following name rules:
+
+1. ActivityName and subjectID are the 2 two indentifier variables which show the activity beging performed and who did the action.
+
+2. Numeric variables that contain the string "Acc" were measured from an accelerometer (units in g's) and variables with the string "Gyro" were measured from the gyroscope (rad/s).
+
+3. In addition, variables with "mean" contain the average whereas variables with "std" are the standard deviation.
+
+4. Finally, variables with t or f in their name represent the data being captured in the time or frequency domain respectively.
